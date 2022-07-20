@@ -1,5 +1,5 @@
 import './App.css';
-import { CopyBlock, solarizedDark as theme } from 'react-code-blocks';
+import { CopyBlock, a11yDark as theme } from 'react-code-blocks';
 import HTTPSnippet from 'httpsnippet';
 
 function App() {
@@ -11,19 +11,28 @@ function App() {
     return (
         <div className="App">
             <header className="App-header">
-                <p>Hello React!</p>
+                <h1>Hello React!</h1>
                 <div
                     style={{
                         fontFamily: '"JetBrains Mono", monospace',
                     }}
                 >
-                    <CopyBlock
-                        language="javascript"
-                        text={snippet.convert('javascript', 'fetch')}
-                        codeBlock
-                        theme={theme}
-                        showLineNumbers={true}
-                    />
+                    {['javascript', 'php', 'java', 'python'].map((lang) => {
+                        return (
+                            <article>
+                                <h3>{lang}</h3>
+                                <CopyBlock
+                                    key={lang}
+                                    language={lang}
+                                    text={snippet.convert(lang)}
+                                    theme={theme}
+                                    showLineNumbers={true}
+                                    wrapLines={true}
+                                    codeBlock
+                                />
+                            </article>
+                        );
+                    })}
                 </div>
             </header>
         </div>
