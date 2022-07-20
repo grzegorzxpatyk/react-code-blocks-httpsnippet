@@ -1,9 +1,12 @@
 import './App.css';
 import { CopyBlock, solarizedDark as theme } from 'react-code-blocks';
+import HTTPSnippet from 'httpsnippet';
 
 function App() {
-    const text =
-        "const text = 'Hello, it is nice to meet you.';\nconst greeting = (text) => {\n\tconsole.log(text);\n}\ngreeting(x);";
+    const snippet = new HTTPSnippet({
+        method: 'GET',
+        url: 'http://mockbin.com/request',
+    });
 
     return (
         <div className="App">
@@ -16,7 +19,7 @@ function App() {
                 >
                     <CopyBlock
                         language="javascript"
-                        text={text}
+                        text={snippet.convert('javascript', 'fetch')}
                         codeBlock
                         theme={theme}
                         showLineNumbers={true}
