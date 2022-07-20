@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import HTTPSnippet from 'httpsnippet';
-import { CopyBlock, a11yDark as theme } from 'react-code-blocks';
+import { CopyBlock, monokaiSublime as theme } from 'react-code-blocks';
+import { Form } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
 function App() {
@@ -9,23 +11,20 @@ function App() {
         url: 'http://mockbin.com/request',
     });
 
-    const [lang, setLang] = useState('javascript');
+    const [lang, setLang] = useState('javascript_fetch');
 
     return (
         <div className="App">
             <header className="App-header">
                 <h1>Hello React!</h1>
-                <div
-                    style={{
-                        fontFamily: '"JetBrains Mono", monospace',
-                        maxWidth: 1000,
-                    }}
-                >
-                    <select
+                <div style={{ maxWidth: '80vw' }}>
+                    <Form.Select
+                        size="sm"
                         name="language"
                         id="language"
                         onChange={(event) => setLang(event.target.value)}
                         value={lang}
+                        className="mb-3"
                     >
                         {[
                             'javascript_fetch',
@@ -43,15 +42,21 @@ function App() {
                                 </option>
                             );
                         })}
-                    </select>
-                    <article>
+                    </Form.Select>
+                    <article
+                        style={{
+                            fontFamily: '"JetBrains Mono", monospace',
+                        }}
+                    >
                         <h3>
                             {lang.includes('_')
                                 ? lang.split('_').join(' - ')
                                 : lang}
                         </h3>
                         <CopyBlock
-                            language={lang}
+                            language={
+                                lang.includes('_') ? lang.split('_')[0] : lang
+                            }
                             text={
                                 lang.includes('_')
                                     ? snippet.convert(
