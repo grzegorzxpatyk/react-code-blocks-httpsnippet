@@ -27,21 +27,42 @@ function App() {
                         onChange={(event) => setLang(event.target.value)}
                         value={lang}
                     >
-                        {['javascript', 'php', 'java', 'python'].map(
-                            (language) => {
-                                return (
-                                    <option key={language} value={language}>
-                                        {language}
-                                    </option>
-                                );
-                            }
-                        )}
+                        {[
+                            'javascript_fetch',
+                            'javascript_xhr',
+                            'javascript_jquery',
+                            'php',
+                            'java',
+                            'python',
+                        ].map((language) => {
+                            return (
+                                <option key={language} value={language}>
+                                    {language.includes('_')
+                                        ? language.split('_').join(' - ')
+                                        : language}
+                                </option>
+                            );
+                        })}
                     </select>
                     <article>
-                        <h3>{lang}</h3>
+                        <h3>
+                            {lang.includes('_')
+                                ? lang.split('_').join(' - ')
+                                : lang}
+                        </h3>
                         <CopyBlock
                             language={lang}
-                            text={snippet.convert(lang)}
+                            text={
+                                lang.includes('_')
+                                    ? snippet.convert(
+                                          lang.substring(0, lang.indexOf('_')),
+                                          lang.substring(
+                                              lang.indexOf('_') + 1,
+                                              lang.length
+                                          )
+                                      )
+                                    : snippet.convert(lang)
+                            }
                             theme={theme}
                             showLineNumbers={true}
                             wrapLines={true}
