@@ -1,12 +1,15 @@
-import './App.css';
-import { CopyBlock, a11yDark as theme } from 'react-code-blocks';
+import { useState } from 'react';
 import HTTPSnippet from 'httpsnippet';
+import { CopyBlock, a11yDark as theme } from 'react-code-blocks';
+import './App.css';
 
 function App() {
     const snippet = new HTTPSnippet({
         method: 'GET',
         url: 'http://mockbin.com/request',
     });
+
+    const [lang, setLang] = useState('javascript');
 
     return (
         <div className="App">
@@ -15,24 +18,36 @@ function App() {
                 <div
                     style={{
                         fontFamily: '"JetBrains Mono", monospace',
+                        maxWidth: 1000,
                     }}
                 >
-                    {['javascript', 'php', 'java', 'python'].map((lang) => {
-                        return (
-                            <article>
-                                <h3>{lang}</h3>
-                                <CopyBlock
-                                    key={lang}
-                                    language={lang}
-                                    text={snippet.convert(lang)}
-                                    theme={theme}
-                                    showLineNumbers={true}
-                                    wrapLines={true}
-                                    codeBlock
-                                />
-                            </article>
-                        );
-                    })}
+                    <select
+                        name="language"
+                        id="language"
+                        onChange={(event) => setLang(event.target.value)}
+                        value={lang}
+                    >
+                        {['javascript', 'php', 'java', 'python'].map(
+                            (language) => {
+                                return (
+                                    <option key={language} value={language}>
+                                        {language}
+                                    </option>
+                                );
+                            }
+                        )}
+                    </select>
+                    <article>
+                        <h3>{lang}</h3>
+                        <CopyBlock
+                            language={lang}
+                            text={snippet.convert(lang)}
+                            theme={theme}
+                            showLineNumbers={true}
+                            wrapLines={true}
+                            codeBlock
+                        />
+                    </article>
                 </div>
             </header>
         </div>
